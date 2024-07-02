@@ -2,13 +2,14 @@ import axios from "axios"
 import clsx from "clsx"
 import DOMPurify from "dompurify"
 import { useState } from "react"
+import { v4 } from "uuid"
 import { twMerge } from "tailwind-merge"
 
 const App = () => {
   const [id, setId] = useState()
   const [id2, setId2] = useState()
   const [exams, setExams] = useState(null)
-  const [userAnswer, setUserAnswer] = useState()
+  const [userAnswer, setUserAnswer] = useState({})
   const handleData = async () => {
     const response = await axios({
       method: "get",
@@ -25,7 +26,6 @@ const App = () => {
       setUserAnswer(response2.data)
     }
   }
-
   return (
     <div className="bg-gray-100 py-6">
       <div className="m-auto rounded-md bg-white w-[1200px] min-h-screen p-8">
@@ -43,15 +43,16 @@ const App = () => {
                       className={twMerge(
                         clsx(
                           item.is_answer === 0 &&
-                            userAnswer[el.id] &&
-                            userAnswer[el.id][0]?.answer[0] === _idx
+                            typeof userAnswer === "object" &&
+                            Object.values(userAnswer)?.find((i) => i[0]?.qid === el.id) &&
+                            Object.values(userAnswer)?.find((i) => i[0]?.qid === el.id)[0]?.answer[0] === _idx
                             ? "text-red-600"
                             : item.is_answer === 1
                             ? "text-green-600"
-                            : "text-gray-800"
+                            : "text-gray-600"
                         )
                       )}
-                      key={idx}
+                      key={v4()}
                     >
                       <span>{`${_idx + 1}. ${item.text}`}</span>
                     </span>
@@ -68,6 +69,7 @@ const App = () => {
               className="p-2 placeholder:text-gray-500 placeholder:text-xs placeholder:italic rounded-md outline-none border min-w-[300px]"
               type="text"
               value={id2}
+              id="inp"
               onChange={(e) => setId2(e.target.value)}
             />
             <label htmlFor="inp2">Bỏ đáp án vào đây:</label>
@@ -76,6 +78,7 @@ const App = () => {
               className="p-2 placeholder:text-gray-500 placeholder:text-xs placeholder:italic rounded-md outline-none border min-w-[300px]"
               type="text"
               value={id}
+              id="inp2"
               onChange={(e) => setId(e.target.value)}
             />
             <button
