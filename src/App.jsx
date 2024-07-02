@@ -42,7 +42,9 @@ const App = () => {
                     <span
                       className={twMerge(
                         clsx(
-                          item.is_answer === 0 && userAnswer[el.id][0]?.answer[0] === _idx
+                          item.is_answer === 0 &&
+                            userAnswer[el.id] &&
+                            userAnswer[el.id][0]?.answer[0] === _idx
                             ? "text-red-600"
                             : item.is_answer === 1
                             ? "text-green-600"
