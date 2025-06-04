@@ -13,17 +13,18 @@ const App = () => {
   const handleData = async () => {
     const response = await axios({
       method: "get",
-      url: `https://jsonblob.com/api/jsonBlob/` + id,
+      url: `https://jsonblob.com/api/jsonBlob/` + "1379825690286940160",
     })
     if (response.status === 200) {
-      setExams(response.data[0].metadata)
+      setExams(response.data.metadata[0].children)
     }
     const response2 = await axios({
       method: "get",
-      url: `https://jsonblob.com/api/jsonBlob/` + id2,
+      url: `https://jsonblob.com/api/jsonBlob/` + "1379825506811305984",
     })
     if (response2.status === 200) {
-      setUserAnswer(response2.data)
+      console.log(response2.data)
+      setUserAnswer(response2.data.answers)
     }
   }
   return (
@@ -44,8 +45,8 @@ const App = () => {
                         clsx(
                           item.is_answer === 0 &&
                             typeof userAnswer === "object" &&
-                            Object.values(userAnswer)?.find((i) => i[0]?.qid === el.id) &&
-                            Object.values(userAnswer)?.find((i) => i[0]?.qid === el.id)[0]?.answer[0] === _idx
+                            Object.values(userAnswer)?.find((i) => i?.iid === el.iid) &&
+                            Object.values(userAnswer)?.find((i) => i?.iid === el.iid)?.answer[0] === _idx
                             ? "text-red-600"
                             : item.is_answer === 1
                             ? "text-green-600"
