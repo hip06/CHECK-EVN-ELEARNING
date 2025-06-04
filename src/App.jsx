@@ -13,14 +13,14 @@ const App = () => {
   const handleData = async () => {
     const response = await axios({
       method: "get",
-      url: `https://jsonblob.com/api/jsonBlob/` + "1379825690286940160",
+      url: `https://jsonblob.com/api/jsonBlob/` + id,
     })
     if (response.status === 200) {
       setExams(response.data.metadata[0].children)
     }
     const response2 = await axios({
       method: "get",
-      url: `https://jsonblob.com/api/jsonBlob/` + "1379825506811305984",
+      url: `https://jsonblob.com/api/jsonBlob/` + id2,
     })
     if (response2.status === 200) {
       console.log(response2.data)
